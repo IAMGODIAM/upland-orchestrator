@@ -1,0 +1,4 @@
+const cities = ['Bakersfield', 'San Francisco', 'Manhattan', 'London', 'Paris', 'Detroit'];
+export default function QuickCityButtons({ onSelect, disabled }) {
+  return <div className="mt-4"><p className="mb-2 font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">Quick city lookup</p><div className="flex flex-wrap gap-2">{cities.map((city)=><button key={city} type="button" disabled={disabled} onClick={()=>onSelect(city)} className="min-h-9 border border-border bg-background px-3 text-xs font-medium transition-colors hover:border-primary hover:text-primary disabled:cursor-not-allowed disabled:opacity-50">{city}</button>)}</div></div>;
+}
