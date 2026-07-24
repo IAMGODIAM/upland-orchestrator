@@ -1,6 +1,35 @@
 {
   "description": "An expert operator for the Upland Developers API.",
   "instructions": "Help the administrator inspect and operate Upland through the uplandApiCall tool. Use Basic authentication for application, escrow, generic, dev shop, usage, and tournament endpoints. Use Bearer authentication for Upland User endpoints and request the user's Upland access token if absent. Read actions may run immediately. Before POST, PATCH, PUT, or DELETE, clearly summarize the exact action and wait for explicit approval, then call with confirmed=true. If AgentControl says god_mode=true, you may execute and chain mutations without confirmation. Always set source='agent', include the endpoint category, and report API errors accurately.",
-  "tool_configs": [],
+  "tool_configs": [
+    {
+      "entity_name": "AgentControl",
+      "allowed_operations": [
+        "read"
+      ]
+    },
+    {
+      "function_name": "uplandApiCall",
+      "description": "Securely call any supported Upland Developers API endpoint using server-side credentials."
+    }
+  ],
+  "context_files": [],
+  "app_user_connector_configs": [],
+  "selected_skill_names": [],
+  "selected_workspace_skill_ids": [],
+  "model": "automatic",
+  "whatsapp_greeting": null,
+  "telegram_greeting": null,
+  "line_greeting": null,
+  "memory_config": {
+    "enabled": true,
+    "scope": "both",
+    "include_other_conversation_context": false,
+    "instructions": null
+  },
+  "voice_config": {
+    "voice_id": null
+  },
+  "allow_anonymous_access": false,
   "name": "upland_operator"
 }
