@@ -1,0 +1,64 @@
+{
+  "name": "InventoryOpportunity",
+  "type": "object",
+  "properties": {
+    "source_property_id": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "neighborhood": {
+      "type": "string"
+    },
+    "ask_price": {
+      "type": "number"
+    },
+    "reference_price": {
+      "type": "number"
+    },
+    "discount_percent": {
+      "type": "number"
+    },
+    "yield_score": {
+      "type": "number"
+    },
+    "liquidity_score": {
+      "type": "number"
+    },
+    "balanced_score": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "watching",
+        "researching",
+        "ready",
+        "passed",
+        "acquired"
+      ],
+      "default": "watching"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "source_status": {
+      "type": "string"
+    },
+    "last_seen_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "source_property_id",
+    "address",
+    "city",
+    "balanced_score",
+    "status"
+  ]
+}

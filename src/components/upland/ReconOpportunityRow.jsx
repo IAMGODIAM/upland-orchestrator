@@ -1,0 +1,8 @@
+import { BookmarkPlus, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ReconScore from '@/components/upland/ReconScore';
+
+const money = (value) => value ? `${Math.round(value).toLocaleString()} UPX` : 'Unavailable';
+export default function ReconOpportunityRow({ item, saved, onSave }) {
+  return <tr className="border-b border-border hover:bg-primary/5"><td className="px-4 py-4"><p className="font-medium">{item.address}</p><p className="mt-1 text-xs text-muted-foreground">{item.neighborhood} · {item.source_status}</p></td><td className="px-4 py-4 font-mono text-xs">{money(item.ask_price)}</td><td className="px-4 py-4"><p className={item.discount_percent > 0 ? 'text-primary' : 'text-muted-foreground'}>{item.discount_percent > 0 ? `${item.discount_percent}% below` : `${Math.abs(item.discount_percent)}% above`}</p><p className="text-[10px] text-muted-foreground">Local reference {money(item.reference_price)}</p></td><td className="px-4 py-4"><div className="flex gap-3 text-[10px] text-muted-foreground"><span>Value {item.discount_score}</span><span>Yield {item.yield_score}</span><span>Liquidity {item.liquidity_score}</span></div></td><td className="px-4 py-4"><ReconScore value={item.balanced_score}/></td><td className="px-4 py-4 text-right"><Button size="sm" variant={saved ? 'secondary' : 'outline'} disabled={saved} onClick={()=>onSave(item)}>{saved ? <Check/> : <BookmarkPlus/>}{saved ? 'Watching' : 'Watch'}</Button></td></tr>;
+}
