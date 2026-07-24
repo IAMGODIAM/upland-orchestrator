@@ -1,0 +1,5 @@
+import { Search, X } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+export default function WorkspaceToolbar({ filter, onFilter, shown, total }) {
+  return <div className="flex flex-col gap-3 border-x border-t border-border bg-card/60 p-3 sm:flex-row sm:items-center sm:justify-between"><label className="relative block w-full sm:max-w-sm"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"/><Input value={filter} onChange={(event)=>onFilter(event.target.value)} placeholder="Filter these results…" className="h-9 pl-9 pr-9"/>{filter&&<button type="button" onClick={()=>onFilter('')} aria-label="Clear filter" className="absolute right-2 top-1/2 min-h-8 min-w-8 -translate-y-1/2 text-muted-foreground hover:text-foreground"><X className="mx-auto h-4 w-4"/></button>}</label><span className="font-mono text-xs text-muted-foreground">Showing {shown} of {total}</span></div>;
+}
