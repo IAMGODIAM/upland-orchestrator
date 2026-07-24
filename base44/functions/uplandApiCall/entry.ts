@@ -48,7 +48,7 @@ Deno.serve(async (req) => {
     await base44.asServiceRole.entities.ApiLog.create({
       endpoint, method, category: input.category || 'Uncategorized', status_code: uplandResponse.status,
       latency_ms: latency, success: uplandResponse.ok, request_payload: { query: input.query || {}, body: input.body || null },
-      response_payload: { preview: JSON.stringify(data).slice(0, 40000) }, source: input.source || 'backend'
+      response_payload: { preview: JSON.stringify(data).slice(0, 3500) }, source: input.source || 'backend'
     });
     return Response.json({ success: uplandResponse.ok, status: uplandResponse.status, latency_ms: latency, data }, { status: uplandResponse.ok ? 200 : uplandResponse.status });
   } catch (error) {
