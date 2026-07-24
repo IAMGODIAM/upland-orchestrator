@@ -31,10 +31,15 @@ Deno.serve(async (req) => {
     const appId = Deno.env.get('UPLAND_APP_ID');
     const accessToken = Deno.env.get('UPLAND_ACCESS_TOKEN');
     if (!appId || !accessToken) throw new Error('Upland credentials are not configured');
+    let userAccessToken = '';
+    if (input.authMode === 'bearer') {
+      const connections = await base44.asServiceRole.entities.UplandConnection.filter({ base44_user_id: user.id, status: 'connected' }, '-updated_date', 1);
+      userAccessToken = String(connections[0]?.access_token || '');
+      if (!userAccessToken) return Response.json({ error: 'Connect your Upland account before using this endpoint' }, { status: 409 });
+    }
     const authorization = input.authMode === 'bearer'
-      ? `Bearer ${String(input.userAccessToken || '')}`
+      ? `Bearer ${userAccessToken}`
       : `Basic ${btoa(`${appId}:${accessToken}`)}`;
-    if (input.authMode === 'bearer' && !input.userAccessToken) return Response.json({ error: 'A Upland user access token is required for this endpoint' }, { status: 400 });
 
     const uplandResponse = await fetch(url, {
       method,

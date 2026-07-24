@@ -1,0 +1,60 @@
+{
+  "name": "UplandConnection",
+  "type": "object",
+  "properties": {
+    "base44_user_id": {
+      "type": "string"
+    },
+    "connection_code": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "connected",
+        "expired"
+      ],
+      "default": "pending"
+    },
+    "upland_user_id": {
+      "type": "string"
+    },
+    "access_token": {
+      "type": "string"
+    },
+    "profile": {
+      "type": "object"
+    },
+    "connected_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "base44_user_id",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
