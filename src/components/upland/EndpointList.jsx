@@ -1,0 +1,6 @@
+import { uplandEndpoints } from '@/lib/uplandEndpoints';
+
+export default function EndpointList({selected,onSelect}) {
+  const groups=Object.groupBy?Object.groupBy(uplandEndpoints,e=>e.category):uplandEndpoints.reduce((a,e)=>({...a,[e.category]:[...(a[e.category]||[]),e]}),{});
+  return <aside className="h-full overflow-y-auto border-r border-border bg-card p-3">{Object.entries(groups).map(([category,items])=><section key={category} className="mb-4"><h2 className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">{category}</h2>{items.map(item=><button key={`${item.method}${item.path}`} onClick={()=>onSelect(item)} className={`mb-1 flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md px-2 text-left text-sm transition-colors duration-200 ${selected.path===item.path&&selected.method===item.method?'bg-accent text-accent-foreground':'hover:bg-accent/60'}`}><span className="w-12 font-mono text-xs font-semibold">{item.method}</span><span className="min-w-0 truncate">{item.name}</span></button>)}</section>)}</aside>;
+}
