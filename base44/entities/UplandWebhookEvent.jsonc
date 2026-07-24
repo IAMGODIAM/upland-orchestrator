@@ -1,0 +1,71 @@
+{
+  "name": "UplandWebhookEvent",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "authentication",
+        "escrow",
+        "tournament",
+        "unknown"
+      ]
+    },
+    "settlement_state": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "final",
+        "failed",
+        "informational"
+      ]
+    },
+    "transaction_id": {
+      "type": "string"
+    },
+    "container_id": {
+      "type": "string"
+    },
+    "upland_user_id": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object"
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "event_type",
+    "category",
+    "settlement_state",
+    "received_at"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
