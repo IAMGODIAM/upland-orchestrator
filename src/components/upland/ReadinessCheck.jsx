@@ -1,2 +1,0 @@
-import { AlertCircle, CheckCircle2 } from 'lucide-react';
-export default function ReadinessCheck({check}){const ready=check.status==='ready';return <li className="flex gap-3 border-b border-border py-4 last:border-0">{ready?<CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary"/>:<AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive"/>}<div><p className="text-sm font-medium">{check.label}</p><p className="mt-1 text-xs leading-5 text-muted-foreground">{check.detail}</p></div></li>}

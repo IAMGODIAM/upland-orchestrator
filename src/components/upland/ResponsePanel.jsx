@@ -1,3 +1,0 @@
-export default function ResponsePanel({response}) {
-  return <section className="border-t border-border bg-card p-5"><div className="mb-3 flex items-center justify-between"><h2 className="font-heading font-semibold">Response</h2>{response&&<span className="font-mono text-xs text-muted-foreground">{response.status||'Error'} · {response.latency_ms||0} ms</span>}</div><pre className="max-h-80 overflow-auto rounded-lg bg-background p-4 font-mono text-xs leading-6 text-foreground">{response?JSON.stringify(response,null,2):'Run an endpoint to inspect its response.'}</pre></section>;
-}
