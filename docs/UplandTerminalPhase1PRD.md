@@ -159,7 +159,7 @@ Acceptance criteria:
 - Use bearer authentication only for the connected user's approved account endpoints.
 - Use application credentials only for sanctioned basic-auth Developer API endpoints.
 - Add Appchain/Hyperion ingestion only after documenting endpoint contracts, pagination, rate behavior, identifiers, and freshness guarantees.
-- Preserve the existing Base44 authentication boundary and admin-only control surfaces.
+- Preserve the self-hosted authentication boundary and admin-only control surfaces.
 - Continue using the existing Roadmap for phase tasks and evidence-gate tracking.
 
 ### Data Contracts

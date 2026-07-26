@@ -1,7 +1,7 @@
 name: quality
 on:
   push:
-    branches: [main, sovereign/no-base44-production]
+    branches: [main, sovereign/production]
   pull_request:
 
 jobs:
