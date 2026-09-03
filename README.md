@@ -1,77 +1,71 @@
-# Base44 Project
+# Upland Orchestrator
 
-Use this repository to run and edit the app locally, then publish changes back through Base44.
+Private, self-hosted Upland portfolio operations console.
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+## Security posture
 
-## Prerequisites
+- **Read-only gateway:** only explicit `GET` paths for profile, balances, properties, NFTs, travels, and Dev Shops are accepted. Transaction, listing, transfer, and purchase methods do not exist.
+- **Signed webhooks:** every inbound webhook requires HMAC-SHA256 validation before a database write.
+- **Encrypted tokens:** player access tokens are Fernet-encrypted at rest; plaintext is only decrypted in memory for an outbound Upland request.
+- **Private operator session:** password-authenticated, short-lived signed sessions; do not expose this service without HTTPS and a reverse-proxy access boundary.
+- **No financial claims:** current runtime reports source totals only. P&L, yield, valuation, and recommendations remain disabled until a reviewed historical-index methodology and golden dataset are in place.
 
-1. Clone the repository using the project's Git URL.
-2. Navigate to the project directory.
-3. Install dependencies: `npm install`.
-4. Install the Base44 CLI: `npm install -g base44@latest`.
+## Stack
 
-See the [Base44 CLI docs](https://docs.base44.com/developers/references/cli/get-started/overview) if you want to run Base44 commands directly.
+- React + Vite operator interface
+- FastAPI API service
+- SQLAlchemy with PostgreSQL in container deployment (SQLite for local tests only)
+- Docker Compose deployment
 
-## Run Locally
-
-Run the full local development environment from the project root:
-
-```bash
-base44 dev
-```
-
-`base44 dev` starts the local Base44 development backend and, when this app is configured for it, also starts the frontend dev server for you. Use the frontend URL printed by the command.
-
-For example, when the Base44 project config includes a `serveCommand`, `base44 dev` can launch the frontend too:
-
-```json5
-{
-  "site": {
-    "serveCommand": "npm run dev"
-  }
-}
-```
-
-In a Base44 project this lives in `base44/config.jsonc`.
-
-## Run Only The Frontend
-
-If you only want to work on the frontend against the hosted Base44 backend, run:
+## Local development
 
 ```bash
+cp .env.example .env
+# Generate an Argon2 hash, then base64-encode it for Compose-safe environment loading.
+# python -c "import base64; from pwdlib import PasswordHash; print(base64.b64encode(PasswordHash.recommended().hash('choose-a-long-password').encode()).decode())"
+uv venv .venv
+uv pip install --python .venv/bin/python -r backend/requirements.txt
+PYTHONPATH=backend .venv/bin/python -m pytest backend/tests -q
+npm install
+npm run build
+PYTHONPATH=backend .venv/bin/python -m uvicorn app.main:app --app-dir backend --reload
+# In another terminal:
 npm run dev
 ```
 
-Open the local URL printed by Vite.
+Open `http://localhost:5173`. The Vite server proxies `/api` to FastAPI on port 8000.
 
-## Use The Hosted Backend
+## Production deployment
 
-For frontend-only development, create or update `.env.local` in the project root:
-
-```bash
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=https://your-app.base44.app
-```
-
-`VITE_BASE44_APP_ID` identifies the Base44 app.
-
-`VITE_BASE44_APP_BASE_URL` tells the Base44 Vite plugin where to send local `/api` requests. Point it at your deployed Base44 app URL when you want the local frontend to use the hosted backend.
-
-When you use `base44 dev`, the command injects the local Base44 values for you, so `.env.local` is mainly needed for frontend-only workflows.
-
-## Publish Your Changes
-
-After pushing your changes to git, open the Base44 dashboard and publish the app:
+1. Set all mandatory values in `.env`; never commit it.
+2. Use an externally managed PostgreSQL volume or the Compose database for initial private deployment.
+3. Deploy behind HTTPS with a Cloudflare Tunnel, reverse proxy, or equivalent access boundary.
+4. Register the webhook at `https://YOUR_HOST/api/webhooks/upland` and configure the same signing secret on both sides.
+5. Verify all release checks before creating a Upland connection:
 
 ```bash
-base44 dashboard open
+docker compose up --build -d
+curl -fsS https://YOUR_HOST/api/health
 ```
 
-## Docs & Support
+## Required environment
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+See `.env.example`. No development defaults are safe for production.
 
-Base44 CLI command reference: [https://docs.base44.com/developers/references/cli/commands/introduction](https://docs.base44.com/developers/references/cli/commands/introduction)
+## Release gate
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+A private release is blocked unless `/api/readiness` reports every control ready:
+- session signing
+- administrator password hash
+- token encryption key
+- Upland application credentials
+- webhook signing secret
+- a connected account
+
+## Test commands
+
+```bash
+PYTHONPATH=backend .venv/bin/python -m pytest backend/tests -q
+npm run build
+docker compose config
+```

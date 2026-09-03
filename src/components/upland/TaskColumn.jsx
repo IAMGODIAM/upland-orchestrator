@@ -1,4 +1,0 @@
-import TaskCard from './TaskCard';
-export default function TaskColumn({ title, status, tasks, onUpdate, onDelete }) {
-  return <section className="min-w-0"><div className="mb-3 flex items-center justify-between border-b border-border pb-3"><h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{title}</h3><span className="font-mono text-xs text-primary">{tasks.length}</span></div><div className="space-y-3">{tasks.map((task)=><TaskCard key={task.id} task={task} onUpdate={onUpdate} onDelete={onDelete}/>)}{tasks.length===0&&<div className="border border-dashed border-border p-5 text-center text-xs text-muted-foreground">No tasks here</div>}</div></section>;
-}
